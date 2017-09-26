@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  NextViewController.h
 //  RACDemo
 //
 //  Created by silence on 2017/9/26.
@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface NextViewController : UIViewController
 
-@property (nonatomic, weak) IBOutlet UIButton *button;
+@property (nonatomic, strong) RACSubject *signalSubject;
 
 @end
-
