@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DE5DFAE6C81100B111236705 /* libPods-RACDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E290E762852B2837F2FFDB5 /* libPods-RACDemo.a */; };
+		E8585B331F7A772F004758A6 /* NextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8585B321F7A772F004758A6 /* NextViewController.m */; };
 		E8CD5E5A1F7A021F00DEA21E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E8CD5E591F7A021F00DEA21E /* AppDelegate.m */; };
 		E8CD5E5D1F7A021F00DEA21E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8CD5E5C1F7A021F00DEA21E /* ViewController.m */; };
 		E8CD5E601F7A021F00DEA21E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E8CD5E5E1F7A021F00DEA21E /* Main.storyboard */; };
@@ -21,6 +22,8 @@
 		44DD6E8F39353F94B35ADC4A /* Pods-RACDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RACDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-RACDemo/Pods-RACDemo.release.xcconfig"; sourceTree = "<group>"; };
 		7167C88697B5BAEFBE57B908 /* Pods-RACDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RACDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RACDemo/Pods-RACDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		E8585B301F7A5708004758A6 /* RACDemo.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RACDemo.pch; sourceTree = "<group>"; };
+		E8585B311F7A772F004758A6 /* NextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NextViewController.h; sourceTree = "<group>"; };
+		E8585B321F7A772F004758A6 /* NextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NextViewController.m; sourceTree = "<group>"; };
 		E8CD5E551F7A021F00DEA21E /* RACDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RACDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E8CD5E581F7A021F00DEA21E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E8CD5E591F7A021F00DEA21E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -79,6 +82,8 @@
 				E8CD5E591F7A021F00DEA21E /* AppDelegate.m */,
 				E8CD5E5B1F7A021F00DEA21E /* ViewController.h */,
 				E8CD5E5C1F7A021F00DEA21E /* ViewController.m */,
+				E8585B311F7A772F004758A6 /* NextViewController.h */,
+				E8585B321F7A772F004758A6 /* NextViewController.m */,
 				E8CD5E5E1F7A021F00DEA21E /* Main.storyboard */,
 				E8CD5E611F7A021F00DEA21E /* Assets.xcassets */,
 				E8CD5E631F7A021F00DEA21E /* LaunchScreen.storyboard */,
@@ -220,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8CD5E5D1F7A021F00DEA21E /* ViewController.m in Sources */,
+				E8585B331F7A772F004758A6 /* NextViewController.m in Sources */,
 				E8CD5E681F7A021F00DEA21E /* main.m in Sources */,
 				E8CD5E5A1F7A021F00DEA21E /* AppDelegate.m in Sources */,
 			);
