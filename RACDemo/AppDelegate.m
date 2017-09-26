@@ -17,25 +17,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    @JavascriptInterface
-    public void note(final String code, final String message) {
-        Logger.d("code = " + code + "  message = " + message);
-        
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(!TextUtils.isEmpty(code) && code.equals("000")) {
-                    ToastUtil.showShort(WithdrawPaymentActivity.this, R.string.es_str_withdraw_success);
-                    setResult(10000);
-                } else {
-                    ToastUtil.showShort(WithdrawPaymentActivity.this, R.string.es_str_withdraw_failed);
-                }
-                
-                finish();
-            }
-        });
-    }
-    
     return YES;
 }
 
