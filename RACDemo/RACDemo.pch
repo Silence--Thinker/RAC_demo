@@ -1,0 +1,26 @@
+//
+//  RACDemo.pch
+//  RACDemo
+//
+//  Created by silence on 2017/9/26.
+//  Copyright © 2017年 silence. All rights reserved.
+//
+
+#ifndef RACDemo_pch
+#define RACDemo_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* RACDemo_pch */
+
+#ifdef __OBJC__
+#import <ReactiveCocoa/ReactiveCocoa.h>
+
+#ifdef DEBUG
+#define NSLog(FORMAT, ...) fprintf(stderr,"%s\n",[[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#else
+#define NSLog(...)
+#endif
+
+#endif
