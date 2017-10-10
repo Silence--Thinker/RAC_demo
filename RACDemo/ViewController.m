@@ -18,8 +18,9 @@
     [super viewDidLoad];
 //    [self racsignal_demo_01];
 //    [self racsubject_demo_01];
-    [self racreplaysubject_demo_01];
-    [self rac_define_demo_01];
+//    [self racreplaysubject_demo_01];
+//    [self rac_define_demo_01];
+    [self find_question];
 }
 
 // RACSignal 信号 RACDisposable
@@ -163,5 +164,23 @@ log:
     int c = ((void)(b = b > 0 ? b : a), b); // (a, b) 只会取后面的值，当时会先进行前者的运算
     NSLog(@"%zd", b);
     NSLog(@"%zd", c);
+}
+
+- (void)find_question {
+    RACSubject *subject = [RACSubject subject];
+    
+    [subject sendNext:@"YYYY"];
+    
+    [subject.rac_deallocDisposable addDisposable:[RACDisposable disposableWithBlock:^{
+        NSLog(@"完成");
+        [subject sendCompleted];
+    }]];
+    
+    NSLog(@"订阅信号");
+    [subject subscribeNext:^(id x) {
+       NSLog(@"执行信号回调%@", x);
+    }];
+    
+    [subject sendNext:@"xxxxx"];
 }
 @end

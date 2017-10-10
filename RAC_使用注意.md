@@ -25,6 +25,7 @@ OverseaShopInfoViewController.m ==>>merchant初始化==>>modules==>>子控件的
 =============
 大家可以放心给我A了
 
+<pre><code>
 initWithMerchant:(OverseaMerchant *)merchant
 p_requestExtraData
 
@@ -34,16 +35,30 @@ NVWhiteBoard *whiteBoard
 NSMutableDictionary *subjects;
 NVWhiteBoardSubject *subject = [self subjectForKey:key];
 NVWhiteBoardSubject : RACSubject
+- (RACDisposable *)subscribe:(id<RACSubscriber>)subscriber
+    if (self.currentValue) {
+            @synchronized (self) {
+                [subscriber sendNext:self.currentValue];
+            }
+    }
+- (void)sendNext:(id)value {
+    @synchronized (self) {
+        self.currentValue = value;
+        [super sendNext:value];
+    }
+}
 
 (void)setValue:(id)value forKey:(NSString *)key
 [[self subjectForKey:key] sendNext:value];
 (void)setObject:(nullable id)object forKeyedSubscript:(nonnull NSString *)key
 
+</code></pre>
 
  //keypath(...)
 //    metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__))(keypath1(__VA_ARGS__))(keypath2(__VA_ARGS__))
 //    keypath2(OBJ, PATH)
 //    (((void)(NO && ((void)self.merchant, NO)), "merchant"))
+
 
 <pre><code>
 metamacro_argcount(a, b, c);
