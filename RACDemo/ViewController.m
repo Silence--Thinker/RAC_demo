@@ -20,7 +20,8 @@
 //    [self racsubject_demo_01];
 //    [self racreplaysubject_demo_01];
 //    [self rac_define_demo_01];
-    [self find_question];
+//    [self find_question];
+    [self raccommandBtn_demo];
 }
 
 // RACSignal 信号 RACDisposable
@@ -182,5 +183,31 @@ log:
     }];
     
     [subject sendNext:@"xxxxx"];
+}
+
+// RACCommand 牛逼
+- (void)raccommandBtn_demo {
+    RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        NSLog(@" command 01 ");
+        
+        RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            NSLog(@" signal 01 ");
+            NSLog(@"subscriber %@", NSStringFromClass([subscriber class]));
+            [subscriber sendCompleted];
+            
+            RACDisposable *disposable = [RACDisposable disposableWithBlock:^{
+            }];
+            return disposable;
+        }];
+        NSLog(@"input class %@", NSStringFromClass([input class]));
+        return signal;
+    }];
+    self.racCommandBtn.rac_command = command;
+    
+//    RACCommand *command2 = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+//        NSLog(@" command 02 ");
+//        return [RACSignal empty];
+//    }];
+//    self.racCommandBtn.rac_command = command2;
 }
 @end

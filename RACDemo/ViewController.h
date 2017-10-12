@@ -12,5 +12,7 @@
 
 @property (nonatomic, weak) IBOutlet UIButton *button;
 
+@property (nonatomic, weak) IBOutlet UIButton *racCommandBtn;
+
 @end
 

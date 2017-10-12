@@ -29,16 +29,24 @@
                                     <action selector="didClickBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qgT-Nb-Wic"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l2g-VB-DZP">
+                                <rect key="frame" x="137.5" y="378" width="100" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.89987717724441674" blue="0.053199188206751291" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="RACCommand"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="g2t-uQ-98t" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dej-A1-WAO"/>
+                            <constraint firstItem="l2g-VB-DZP" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QIY-9o-ESn"/>
+                            <constraint firstItem="l2g-VB-DZP" firstAttribute="top" secondItem="g2t-uQ-98t" secondAttribute="bottom" constant="30" id="bD9-qd-9YK"/>
                             <constraint firstItem="g2t-uQ-98t" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="zAg-87-y9w"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Jlg-yD-ZQD"/>
                     <connections>
                         <outlet property="button" destination="g2t-uQ-98t" id="dYx-Ug-EgA"/>
+                        <outlet property="racCommandBtn" destination="l2g-VB-DZP" id="0Uu-h2-1EI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
