@@ -22,6 +22,7 @@
 //    [self rac_define_demo_01];
 //    [self find_question];
     [self raccommandBtn_demo];
+//    [self racMap_demo];
 }
 
 // RACSignal 信号 RACDisposable
@@ -124,7 +125,7 @@ log:
     }];
     // 发送信号
     [replaySubject sendNext:@"##信号111"];
-    [replaySubject sendNext:@"##信号222"];
+//    [replaySubject sendNext:@"##信号222"];
     
     // 订阅信号
     [replaySubject subscribeNext:^(id x) {
@@ -160,6 +161,31 @@ log:
     [self.navigationController pushViewController:next animated:YES];
 }
 
+- (void)rac_doNext
+{
+    RACSubject *subject = [RACSubject subject];
+    RACSignal *signal = [subject doNext:^(id x) {
+       NSLog(@"log do next block");
+    }];
+    [signal subscribeNext:^(id x) {
+       NSLog(@"log subscribe next block");
+    }];
+    
+//    [subject sendNext:@"xxxx"];
+    
+    RACSignal *signal2 = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        [subscriber sendNext:@"xxxxx"];
+        [subscriber sendCompleted];
+        return nil;
+    }];
+    RACSignal *signal3 = [signal2 doNext:^(id x) {
+        NSLog(@"signal2 log do next block");
+    }];
+    [signal3 subscribeNext:^(id x) {
+        NSLog(@"signal3 log subscribe next block");
+    }];
+}
+
 - (void)rac_define_demo_01 {
     int a = 4, b = 0;
     int c = ((void)(b = b > 0 ? b : a), b); // (a, b) 只会取后面的值，当时会先进行前者的运算
@@ -185,6 +211,29 @@ log:
     [subject sendNext:@"xxxxx"];
 }
 
+// 网络请求类似的返回信号
+- (RACSignal *)signal:(NSObject *)object
+{
+    RACSignal *s = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+        
+        void (^block)(NSArray *array, NSError *error) = ^(NSArray *array, NSError *error) {
+            
+        };
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            block(nil, nil);
+            [subscriber sendNext:@"12313123"];
+            
+            [subscriber sendCompleted];
+        });
+        
+        return [RACDisposable disposableWithBlock:^{
+            
+        }];
+    }];
+    return s;
+}
+
 // RACCommand 牛逼
 - (void)raccommandBtn_demo {
     RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
@@ -192,6 +241,7 @@ log:
         
         RACSignal *signal = [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
             NSLog(@" signal 01 ");
+            [subscriber sendNext:@"xxxxxx"];
             NSLog(@"subscriber %@", NSStringFromClass([subscriber class]));
             [subscriber sendCompleted];
             
@@ -202,7 +252,7 @@ log:
         NSLog(@"input class %@", NSStringFromClass([input class]));
         return signal;
     }];
-    self.racCommandBtn.rac_command = command;
+    self.racCommandBtn.rac_command  = command;
     
 //    RACCommand *command2 = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
 //        NSLog(@" command 02 ");
@@ -210,4 +260,182 @@ log:
 //    }];
 //    self.racCommandBtn.rac_command = command2;
 }
+
+- (void)demo_001 {
+    int a = 0, b = 0;
+    a = 1;
+    b = 2;
+    int c = ((void)a, b);
+    NSLog(@"%zd", c);
+//    strchr(# PATH, '.') + 1))
+    NSLog(@"%@", @keypath(self.view));            // view
+    NSLog(@"%s", strchr("123.456.789", '1') + 2); // 3.456.789
+    
+    
+    RACSubject *subject = [RACSubject subject];
+    
+    [[subject skip:1] subscribeNext:^(id x) {
+        NSLog(@"订阅信号 111111 %@", x);
+    }];
+    
+    [subject subscribeNext:^(id x) {
+        NSLog(@"订阅信号 222222 %@", x);
+    }];
+    
+    [subject sendNext:@"发送信号 1010"];
+    [subject sendNext:@"发送信号 1010"];
+    
+}
+
+- (void)rac_command_signal_executing {
+    // 监听事件有没有完成
+    
+//    1.创建命令 initWithSignalBlock:(RACSignal * (^)(id input))signalBlock
+//    2.在signalBlock中，创建RACSignal，并且作为signalBlock的返回值
+//    3.执行命令 - (RACSignal *)execute:(id)input
+    
+    RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        NSLog(@"command 执行 %@", input);
+        
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            [subscriber sendNext:@"执行产生的数据"];
+            [subscriber sendCompleted];
+            
+            return [RACDisposable disposableWithBlock:^{
+                NSLog(@"内部信号执行完毕");
+            }];
+        }];
+    }];
+    
+    [command.executing subscribeNext:^(id x) {
+        if ([x boolValue]) {
+            NSLog(@"当前command正在执行");
+        } else {
+            NSLog(@"当前command没有/完成执行");
+        }
+    }];
+    [command execute:@"111111"];
+}
+
+- (void)rac_command_siganal_demo_01 {
+    // 监听按钮点击，网络请求 方式一 普通做法
+    RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        NSLog(@"command 执行 %@", input);
+        
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            [subscriber sendNext:@"执行产生的数据"];
+            [subscriber sendCompleted];
+            return [RACDisposable disposableWithBlock:^{
+                NSLog(@"内部信号执行完毕");
+            }];
+        }];
+    }];
+    
+    RACSignal *signal = [command execute:@"1111111"];
+    
+    [signal subscribeNext:^(id x) {
+        NSLog(@"command 执行的 信号 %@", x);
+    }];
+//    command 执行 1111111
+//    command 执行的 信号 执行产生的数据
+//    内部信号执行完毕
+}
+- (void)rac_command_siganal_demo_02 {
+    // 监听按钮点击，网络请求 方式二 一般做法
+    RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        NSLog(@"command 执行 %@", input);
+        
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            [subscriber sendNext:@"执行产生的数据"];
+            [subscriber sendCompleted];
+            
+            return [RACDisposable disposableWithBlock:^{
+                NSLog(@"内部信号执行完毕");
+            }];
+        }];
+    }];
+    // executionSignals 是执行信号。。订阅传的值x就是上面创建的signal
+    // executionSignals 信号是一个ARCReplaySubject信号。。因为先subscribeNext 才执行的execute发送信号
+    [[command executionSignals] subscribeNext:^(id x) { // x 是一个信号
+        [x subscribeNext:^(id x) {
+            NSLog(@"能用到==%@", x);
+        }];
+        NSLog(@"command的执行信号 %@", x);
+    }];
+    
+    [command execute:@"1111111"];
+//    command 执行 1111111
+//    command的执行信号 <RACDynamicSignal: 0x60c000227fc0> name:
+//    能用到==执行产生的数据
+//    内部信号执行完毕
+}
+- (void)rac_command_siganal_demo_03 {
+    // 监听按钮点击，网络请求 方式三 高级做法
+    RACCommand *command = [[RACCommand alloc] initWithSignalBlock:^RACSignal *(id input) {
+        NSLog(@"command 执行 %@", input);
+        
+        return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
+            [subscriber sendNext:@"执行产生的数据"];
+            [subscriber sendCompleted];
+            
+            return [RACDisposable disposableWithBlock:^{
+                NSLog(@"内部信号执行完毕");
+            }];
+        }];
+    }];
+    
+    // switchToLatest获取最新发送的信号，只能用于信号中信号。
+    // 将demo_02中信号的中转订阅忽略了。。。果然高级
+    [command.executionSignals.switchToLatest subscribeNext:^(id x) {
+        NSLog(@"能用到==%@", x);
+    }];
+    
+    [command execute:@"1111111"];
+}
+
+// switchToLatest 获取信号中信号发送的最新信号
+- (void)rac_signal_switchToLatest_demo {
+    RACSubject *signalofSignal = [RACSubject subject];
+    RACSubject *signalA = [RACSubject subject];
+    
+    [signalofSignal subscribeNext:^(RACSignal *x) {
+        [x subscribeNext:^(id x) {
+            NSLog(@"等效果？？？%@", x);// 跟switchToLatest是同样效果
+        }];
+    }];
+    
+    [signalofSignal.switchToLatest subscribeNext:^(id x) {
+       NSLog(@"发送的最新信号 %@", x);
+    }];
+    
+    [signalofSignal sendNext:signalA];
+    [signalA sendNext:@"1111111"];
+}
+
+// RAC map
+- (void)racMap_demo {
+    NSArray *array = @[@1, @2, @3, @5, @6];
+    array = [[array.rac_sequence map:^id(id value) {
+        NSLog(@"%@", value);
+        if ([value integerValue] == 1) {
+            return @99;
+        }
+        return @12;
+    }] array];
+    NSLog(@"%@", array);
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+//    [self racMap_demo];
+//    [self demo_001];
+//    [self rac_doNext];
+    
+//    [self rac_command_signal_executing];
+//    [self rac_command_siganal_demo_01];
+//    [self rac_command_siganal_demo_02];
+//    [self rac_command_siganal_demo_03];
+    
+    [self rac_signal_switchToLatest_demo];
+}
+
 @end

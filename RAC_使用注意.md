@@ -61,6 +61,11 @@ NVWhiteBoardSubject : RACSubject
 
 
 <pre><code>
+//keypath(...)
+//    metamacro_if_eq(1, metamacro_argcount(__VA_ARGS__))(keypath1(__VA_ARGS__))(keypath2(__VA_ARGS__))
+//    keypath2(OBJ, PATH)
+//    (((void)(NO && ((void)self.merchant, NO)), "merchant"))
+
 metamacro_argcount(a, b, c);
     
 #define metamacro_argcount(...) \
@@ -96,3 +101,5 @@ RACSubscriptingAssignmentTrampoline
 ### keypath(...) 宏解析
 
 ### RAC() RAC_ 宏解析
+
+### executionSignals
